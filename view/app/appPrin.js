@@ -66,6 +66,9 @@ app.controller('controladorPrincipal', ['$scope','$http',
     //Lee valores del Servicio
 	$scope.iniciarValores = function(){
 
+		console.log('URL: ' + SERV);
+		console.log('La variable de generalPrinc: ' + PROBANDO);
+
 		$scope.servicio = '/PHP/idiomasV2/contactos';
 		peticion = {
 				'method':	'GET',
