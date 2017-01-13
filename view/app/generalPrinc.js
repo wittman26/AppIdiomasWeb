@@ -17,5 +17,38 @@ var SRV_REMOTO = 'REMOTO';
 /* Servidor en uso */
 var SERV = LIS_SRV[SRV_LOCAL];
 
+/* Ruta de componentes */
+var COMP = 'app/components';
+
 /* Variable de control*/
 var PROBANDO = "Muéstrese!";
+
+/* Dirección de páginas*/
+var ESTADOS_URLS = {
+
+					'login': {
+					            url: "/login",
+					            views:{
+					                "principal": {
+					                    templateUrl: COMP + "/login/login.html",
+					                    controller: 'loginCtrl'
+					                }
+					            }					            
+					        },
+					'registro': {
+					            url: "/registro",
+					            views:{
+					                "principal":{
+					                    templateUrl: COMP + "/registro/registro.html",
+					                    controller: 'registroCtrl'
+					                },
+					                "lateral": {
+					                    templateUrl: "lateral.html"
+					                }
+					            } 
+					        }
+			}
+
+
+/* Módulos globales*/
+var controladores = angular.module('controladores',[]);

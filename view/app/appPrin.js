@@ -3,14 +3,24 @@ autor: Wittman Gutiérrez
 fecha: 2016-12-13
 */
 
+var app = angular.module('modPrincipal', ['ui.router','controladores']);
 
-//Para almacenar en local storage con angular
-//http://www.aprende-facilmente.com/angular-js/como-utilizar-ngstorage-en-angularjs/
-var app = angular.module('appPrincipal', []);
+app.config(function($stateProvider,$urlRouterProvider){
+    $urlRouterProvider.otherwise("/login");
 
+	// /* ESTADOS_URLS: Viene de general.js*/
+
+	for (llaveEstado in ESTADOS_URLS) {
+		//https://api.jquery.com/jquery.extend/
+		//var contenido = $.extend(true, {}, ESTADOS_URLS[llaveEstado]);
+		console.log(JSON.stringify(llaveEstado));
+		$stateProvider.state(llaveEstado, ESTADOS_URLS[llaveEstado]);
+	}	
+});
 
 app.controller('controladorPrincipal', ['$scope','$http',
 								 function($scope,$http){
+
 	$scope.resu = 'No ha hecho click';	
 	console.log($scope.resu);
 	
