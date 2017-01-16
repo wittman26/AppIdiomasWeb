@@ -1,14 +1,14 @@
 /*
-autor: Wittman Gutiérrez
-fecha: 2016-12-13
+	autor: Wittman Gutiérrez
+	fecha: 2016-12-13
 */
 
-var app = angular.module('modPrincipal', ['ui.router','controladores']);
+var app = angular.module('modPrincipal', ['ui.router','modControladores']);
 
 app.config(function($stateProvider,$urlRouterProvider){
     $urlRouterProvider.otherwise("/login");
 
-	// /* ESTADOS_URLS: Viene de general.js*/
+	/* ESTADOS_URLS: Viene de general.js*/
 
 	for (llaveEstado in ESTADOS_URLS) {
 		//https://api.jquery.com/jquery.extend/
@@ -17,6 +17,7 @@ app.config(function($stateProvider,$urlRouterProvider){
 		$stateProvider.state(llaveEstado, ESTADOS_URLS[llaveEstado]);
 	}	
 });
+
 
 app.controller('controladorPrincipal', ['$scope','$http',
 								 function($scope,$http){

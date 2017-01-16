@@ -51,4 +51,4 @@ var ESTADOS_URLS = {
 
 
 /* Módulos globales*/
-var controladores = angular.module('controladores',[]);
+var modControladores = angular.module('modControladores',[]);
