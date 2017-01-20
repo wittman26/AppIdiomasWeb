@@ -3,9 +3,11 @@
 	fecha: 2016-12-13
 */
 
-var app = angular.module('modPrincipal', ['ui.router','modControladores']);
+var app = angular.module('modPrincipal', ['ui.router','pascalprecht.translate','modControladores']);
 
-app.config(function($stateProvider,$urlRouterProvider){
+
+// Configuración de URLS para SPA
+app.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider){
     $urlRouterProvider.otherwise("/login");
 
 	/* ESTADOS_URLS: Viene de general.js*/
@@ -16,16 +18,78 @@ app.config(function($stateProvider,$urlRouterProvider){
 		console.log(JSON.stringify(llaveEstado));
 		$stateProvider.state(llaveEstado, ESTADOS_URLS[llaveEstado]);
 	}	
-});
+}]);
 
 
-app.controller('controladorPrincipal', ['$scope','$http',
-								 function($scope,$http){
+// Configuración de módulo Multilenguaje
+app.config(['$translateProvider', function ($translateProvider) {
+	$translateProvider
+	.useStaticFilesLoader({
+		prefix: 'assets/multilenguaje/textos-',
+		suffix: '.json'
+	})	
+	.preferredLanguage(IDIOMA) //lenguaje predeterminado
+	.useSanitizeValueStrategy('escape'); //Para evitar problemas de seguridad http://angular-translate.github.io/docs/#/guide/19_security
+}]);
+
+/*app.config([
+  '$translateProvider',
+  function translationConfigFn($translateProvider) {
+    $translateProvider.useStaticFilesLoader({
+      prefix: 'assets/multilenguaje/textos-',
+      suffix: '.json'
+    });
+    $translateProvider.useLocalStorage();
+    $translateProvider.preferredLanguage(IDIOMA);
+  }
+]);*/
+
+
+/*app.config(['$translateProvider', function ($translateProvider) {
+  $translateProvider.translations('en', {
+    'TITLE': 'Hello',
+    'FOO': 'This is a paragraph',
+    'TEST': 'This is in English'
+  });
+ 
+  $translateProvider.translations('de', {
+    'TITLE': 'Hallo',
+    'FOO': 'Dies ist ein Absatz',
+    'TEST': 'Du..Du hast, du hast mitch'
+  });
+
+  $translateProvider.translations('es', {
+    'TITLE': 'Hola',
+    'FOO': 'Esto es alguna joda',
+    'TEST': 'Esto está en Español',
+    'barra': {
+    	'valor' : 'esta en valor de la barra'
+    },
+    'PRUEBA' : 'Texto generado a la antigua'
+  });  
+ 
+  $translateProvider.preferredLanguage(IDIOMA);
+  // Enable escaping of HTML
+  $translateProvider.useSanitizeValueStrategy('escape');  
+}]);*/
+
+
+app.controller('controladorPrincipal', ['$scope','$http','$filter','$translate',
+								 function($scope,$http,$filter,$translate){
+
+	$scope.cambiaridioma = function(idioma){
+		console.log('Entró a cambiar carajo!' + idioma);
+		$scope.resu = 'Cambió el idioma pué'
+		$translate.use(idioma);
+	}    
+
+	$scope.numero = 5;
 
 	$scope.resu = 'No ha hecho click';	
 	console.log($scope.resu);
 	
-	$scope.cambiar = function(){
+	$scope.cambiar = function(boo){
+		console.log('Entró a cambiar carajo!' + boo);
 		$scope.resu = 'Ya hizo click pué!'
 	}
 
@@ -158,7 +222,7 @@ app.controller('controladorPrincipal', ['$scope','$http',
 
 	}
 
-	$scope.iniciarValores();	
+	// $scope.iniciarValores();	
 
 	console.log('JSON recibido'+JSON.stringify($scope.ContactosBD));
 

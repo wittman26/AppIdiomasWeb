@@ -20,6 +20,9 @@ var SERV = LIS_SRV[SRV_LOCAL];
 /* Ruta de componentes */
 var COMP = 'app/components';
 
+/* Idioma predefinido */
+var IDIOMA = 'en';
+
 /* Variable de control*/
 var PROBANDO = "Muéstrese!";
 

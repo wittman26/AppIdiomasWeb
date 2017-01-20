@@ -1,0 +1,18 @@
+{
+    "barra" : {
+        "iniciosesion"  :   "Login",
+        "registrar"     :   "Sign up"
+    },
+    "comun" : {
+    	"aceptar"	: "Accept",
+    	"cancelar"	: "Cancel"
+    },
+    "login" : {
+    	"ingresemail"	:"Email address",
+    	"ingresepass"	:"Password",
+    	"recordar"		:"Remember",
+    	"entrar"		:"Log in",
+    	"olvido"		:"Forgotten account?"
+    },
+    "BIENVENIDO": "Welcome to AppIdiomas"
+}

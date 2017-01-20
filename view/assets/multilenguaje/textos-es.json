@@ -1,0 +1,18 @@
+{
+    "barra" : {
+        "iniciosesion"  :   "Iniciar Sesión",
+        "registrar"     :   "Registrarse"
+    },    
+    "comun" : {
+    	"aceptar"	: "Aceptar",
+    	"cancelar"	: "Cancelar"
+    },
+    "login" : {
+    	"ingresemail"	:"Ingrese Email",
+    	"ingresepass"	:"Contraseña",
+    	"recordar"		:"Recordar",
+    	"entrar"		:"Entrar",
+    	"olvido"		:"Olvidó la contraseña?"
+    },
+    "BIENVENIDO": "Bienvenido a la App de Idiomas"
+}

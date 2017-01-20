@@ -9,7 +9,7 @@
             <form class="form-signin">
                 <span id="reauth-email" class="reauth-email"></span>
                 <input type="email" id="inputEmail" class="form-control" placeholder="Ingrese Email" required autofocus>
-                <input type="password" id="inputPassword" class="form-control" placeholder="Contraseña" required>
+                <input type="password" id="inputPassword" class="form-control" placeholder="{{ 'BIENVENIDO' | translate }}" required>
                 <div id="remember" class="checkbox">
                     <label>
                         <input type="checkbox" value="remember-me"> Recordar
@@ -18,7 +18,7 @@
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Entrar</button>
             </form><!-- /form -->
             <a href="#" class="forgot-password">
-                Olvidó la contraseña? {{prueba}} escriba
+                {{ 'login.olvido' | translate }} {{prueba}} escriba
             </a>
         </div><!-- /card-container -->
     </div><!-- /container -->

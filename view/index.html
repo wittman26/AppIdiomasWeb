@@ -18,7 +18,9 @@
 <script src="http://localhost:8888/Angular/LibreriasLocal/angular.min.js"></script>
 
 <!-- PLUGINS DE APLICACION -->
-<script src="assets/libs/angular-ui-router.min.js"></script>
+<script src="assets/libs/angular-ui-router.min.js"></script> <!-- Enrutador para desarrollo de SPA -->
+<script src="assets/libs/angular-translate.min.js"></script> <!-- filtro de multilenguaje -->
+<script src="assets/libs/angular-translate-loader-static-files.min.js"></script>
 
 <!-- SCRIPTS DE APLICACION -->
 <script src="assets/js/jsLogin.js" type="text/javascript"></script>
@@ -30,10 +32,17 @@
 <script src="app/components/Registro/registroCtrl.js" type="text/javascript"></script>
 
 <body ng-app="modPrincipal">
+	<div ng-controller="controladorPrincipal">
 	<header>
 		<nav>
-			<a ui-sref="login">Iniciar Sesión</a>
-			<a ui-sref="registro">Registrarse</a>						
+			<h1>{{ 'BIENVENIDO' | translate }}</h1>
+			<a ui-sref="login">{{ 'barra.iniciosesion' | translate }}</a>
+			<a ui-sref="registro">{{ 'barra.registrar' | translate }}</a>				
+
+			<p>
+			  <button ng-click="cambiaridioma('es')">Español</button>
+			  <button ng-click="cambiaridioma('en')">English</button>
+			</p>					
 		</nav>
 	</header>
 
@@ -51,14 +60,14 @@
 
 
 	<!-- PRUEBAS DE ANGULAR -->
-	<div ng-controller="controladorPrincipal">
+	<!-- <div ng-controller="controladorPrincipal"> -->
 		<div ng-hide="true">
 			<form ng-submit="cambiar()">
 			  <input type="text">
 			  <input type="submit">
 			  <button class="btn btn-success">Éxito</button>
 			</form>	
-
+			{{ numero | currency:'$'}}
 			<p>{{resu}}</p><br>
 
 			<h4>Datos Quemados</h4>
