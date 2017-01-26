@@ -12,15 +12,16 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/cssLogin.css">
 </head>
 
-<!-- LIBRERIAS EN LOCAL -->
+<!-- FRAMEWORKS EN LOCAL -->
 <script src="http://localhost:8888/Angular/LibreriasLocal/jquery-3.1.1.min.js"></script>
 <script src="http://localhost:8888/Angular/LibreriasLocal/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-<script src="http://localhost:8888/Angular/LibreriasLocal/angular.min.js"></script>
+<script src="http://localhost:8888/Angular/LibreriasLocal/angular.min.js"></script> <!-- Ver. 1.6.0 -->
 
-<!-- PLUGINS DE APLICACION -->
+<!-- LIBRERIAS DE APLICACION -->
 <script src="assets/libs/angular-ui-router.min.js"></script> <!-- Enrutador para desarrollo de SPA -->
 <script src="assets/libs/angular-translate.min.js"></script> <!-- filtro de multilenguaje -->
 <script src="assets/libs/angular-translate-loader-static-files.min.js"></script>
+<script src="assets/libs/angular-cookies.min.js"></script> <!-- Manejador de cookies -->
 
 <!-- SCRIPTS DE APLICACION -->
 <script src="assets/js/jsLogin.js" type="text/javascript"></script>
@@ -30,14 +31,20 @@
 <!-- CONTROLADORES DE APLICACION -->
 <script src="app/components/Login/loginCtrl.js" type="text/javascript"></script>
 <script src="app/components/Registro/registroCtrl.js" type="text/javascript"></script>
+<script src="app/components/Perfil/perfilCtrl.js" type="text/javascript"></script>
+
+<!-- SERVICIOS DE APLICACION -->
+<script src="app/shared/Servicios/FacebookSrv.js" type="text/javascript"></script>
+<script src="app/shared/Servicios/UsuariosSrv.js" type="text/javascript"></script>
 
 <body ng-app="modPrincipal">
-	<div ng-controller="controladorPrincipal">
+	<div ng-controller="controladorPrincipal" ng-cloak>
 	<header>
 		<nav>
-			<h1>{{ 'BIENVENIDO' | translate }}</h1>
-			<a ui-sref="login">{{ 'barra.iniciosesion' | translate }}</a>
-			<a ui-sref="registro">{{ 'barra.registrar' | translate }}</a>				
+			<h1>{{ 'BIENVENIDO' | translate }} - {{Servicio1}} - {{Nombre1}}</h1>
+			<a ui-sref="login" ng-show="visible">{{ 'barra.iniciosesion' | translate }}</a>
+			<a ui-sref="registro">{{ 'barra.registrar' | translate }}</a>
+			<a ui-sref="perfil">{{ 'barra.perfil' | translate }}</a>			
 
 			<p>
 			  <button ng-click="cambiaridioma('es')">Español</button>
@@ -61,7 +68,7 @@
 
 	<!-- PRUEBAS DE ANGULAR -->
 	<!-- <div ng-controller="controladorPrincipal"> -->
-		<div ng-hide="true">
+		<div ng-hide="true" ng-cloak>
 			<form ng-submit="cambiar()">
 			  <input type="text">
 			  <input type="submit">

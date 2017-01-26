@@ -26,6 +26,9 @@ var IDIOMA = 'en';
 /* Variable de control*/
 var PROBANDO = "Muéstrese!";
 
+/* Visibilidad login*/
+var LOGVISIBLE = true;
+
 /* Dirección de páginas*/
 var ESTADOS_URLS = {
 
@@ -49,9 +52,22 @@ var ESTADOS_URLS = {
 					                    templateUrl: "lateral.html"
 					                }
 					            } 
-					        }
+					        },
+					'perfil': {
+					            url: "/perfil",
+					            views:{
+					                "principal": {
+					                    templateUrl: COMP + "/perfil/perfil.html",
+					                    controller: 'perfilCtrl'
+					                },
+					                "lateral": {
+					                    templateUrl: "lateral.html"
+					                }
+					            }					            
+					        },					        
 			}
 
 
 /* Módulos globales*/
 var modControladores = angular.module('modControladores',[]);
+var modServicios = angular.module('modServicios',[]);

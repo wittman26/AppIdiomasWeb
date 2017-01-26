@@ -1,7 +1,8 @@
 {
     "barra" : {
         "iniciosesion"  :   "Login",
-        "registrar"     :   "Sign up"
+        "registrar"     :   "Sign up",
+        "perfil"        :   "Profile"
     },
     "comun" : {
     	"aceptar"	: "Accept",

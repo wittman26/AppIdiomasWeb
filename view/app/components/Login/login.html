@@ -6,19 +6,27 @@
             <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
             <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
             <p id="profile-name" class="profile-name-card"></p>
-            <form class="form-signin">
+            <form class="form-signin" ng-submit="entrar()">
                 <span id="reauth-email" class="reauth-email"></span>
-                <input type="email" id="inputEmail" class="form-control" placeholder="Ingrese Email" required autofocus>
-                <input type="password" id="inputPassword" class="form-control" placeholder="{{ 'BIENVENIDO' | translate }}" required>
+                <input type="email" id="inputEmail" class="form-control" placeholder="{{ 'login.ingresemail' | translate}}" required autofocus ng-model="username">
+                <input type="password" id="inputPassword" class="form-control" placeholder="{{ 'login.ingresepass' | translate }}" required ng-model="password">
                 <div id="remember" class="checkbox">
                     <label>
-                        <input type="checkbox" value="remember-me"> Recordar
+                        <input type="checkbox" value="remember-me"> {{ 'login.recordar' | translate }}
                     </label>
                 </div>
-                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Entrar</button>
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">{{ 'login.entrar' | translate }}</button>
+                <fb:login-button show-faces="true" max-rows="1" size="large"></fb:login-button>    
+                <a href="/join/facebook/?next=/home/" class="btn btn-flacebook btn-connect btn-large">
+                    <span class="ico-wrap">
+                        <span class="ico ico-facebook ico-white ico-m"></span>
+                    </span>
+                    Iniciar sesión con Facebook
+                </a>            
             </form><!-- /form -->
             <a href="#" class="forgot-password">
-                {{ 'login.olvido' | translate }} {{prueba}} escriba
-            </a>
+                {{ 'login.olvido' | translate }} {{prueba}}
+            </a><br>
+            <a href="#">{{serviciousu}}</a>
         </div><!-- /card-container -->
     </div><!-- /container -->

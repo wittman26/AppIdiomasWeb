@@ -3,12 +3,11 @@
 	fecha: 2016-12-13
 */
 
-var app = angular.module('modPrincipal', ['ui.router','pascalprecht.translate','modControladores']);
-
+var modPrincipal = angular.module('modPrincipal', ['ui.router','pascalprecht.translate','ngCookies','modControladores','modServicios']);
 
 // Configuración de URLS para SPA
-app.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider){
-    $urlRouterProvider.otherwise("/login");
+modPrincipal.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider){
+    $urlRouterProvider.otherwise("/");
 
 	/* ESTADOS_URLS: Viene de general.js*/
 
@@ -20,9 +19,8 @@ app.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	}	
 }]);
 
-
 // Configuración de módulo Multilenguaje
-app.config(['$translateProvider', function ($translateProvider) {
+modPrincipal.config(['$translateProvider', function ($translateProvider) {
 	$translateProvider
 	.useStaticFilesLoader({
 		prefix: 'assets/multilenguaje/textos-',
@@ -32,50 +30,201 @@ app.config(['$translateProvider', function ($translateProvider) {
 	.useSanitizeValueStrategy('escape'); //Para evitar problemas de seguridad http://angular-translate.github.io/docs/#/guide/19_security
 }]);
 
-/*app.config([
-  '$translateProvider',
-  function translationConfigFn($translateProvider) {
-    $translateProvider.useStaticFilesLoader({
-      prefix: 'assets/multilenguaje/textos-',
-      suffix: '.json'
-    });
-    $translateProvider.useLocalStorage();
-    $translateProvider.preferredLanguage(IDIOMA);
-  }
-]);*/
+
+// Configuración API de facebook
+modPrincipal.run(['$rootScope','$state', '$window','UsuariosSrv',
+  function($rootScope,$state,$window,UsuariosSrv) {
+
+  	$rootScope.visible = LOGVISIBLE;
+	
+	//al cambiar de rutas
+	$rootScope.$on('$stateChangeStart', function(event, toState,fromState)
+	{
+	    //llamamos a checkStatus, el cual lo hemos definido en la factoria UsuariosSrv
+	    //la cuál hemos inyectado en la acción run de la aplicación
+
+	    console.log('En el run');
+
+	    /*var algo = 'boo';
+
+            if(typeof(algo) !== "undefined")
+            {
+                //$location.path("/login");
+                console.log('usuario indefinido: ');
+                // $state.go('login');
+            } else {
+            	console.log('por el otro lao');
+            	// $state.go($state.current.name);
+            }
+		event.preventDefault();*/
+	    // UsuariosSrv.checkStatus();
+
+		/*var cosa = 'g';
+		if (typeof(cosa) !== "undefined" && toState.name!== 'login') {
+			console.log('vaya a login');
+			event.preventDefault();
+		    $state.go('login');
+		}*/
+
+		// event.preventDefault();
+		
+		UsuariosSrv.checkStatus(event,toState);
+		$rootScope.visible = LOGVISIBLE;
+		console.log('LLegó acá Visible?: ' + $rootScope.visible);		
+	}
+
+	/*function (event, toState, toParams, fromState, fromParams) {
+
+		console.log('toState.name: '+toState.name);
+		console.log('fromState.name: '+fromState.name);
+
+		if(confirm("Would you like to change state?")){
+			console.log('go to: '+ toState.name);
+		} else {
+		console.log('stay at state: '+fromState.name);
+			event.preventDefault();
+		//event.stopPropagation;
+		}
+	}*/
+
+	)  	
+
+  $rootScope.user = {};
+
+	// Executed when the SDK is loaded
+	window.fbAsyncInit = function() {		 
+		FB.init({
+			appId       : '1277266832330917',	//Id application
+			status		: true,		// Set if you want to check the authentication status
+			cookie      : true,  	// enable cookies to allow the server to access the session							
+			xfbml      	: true,  	// parse social plugins on this page
+			version    	: 'v2.8' 	// use graph api version 2.8
+		});
+
+		// sAuth.watchAuthenticationStatusChange();
+
+		FB.getLoginStatus(function(response) {
+			//statusChangeCallback(response);
+		});
+
+	};
+
+	// Load the SDK asynchronously
+	(function(doc, scr, id){
+	 var js, ref = doc.getElementsByTagName(scr)[0];
+	 
+	 if (doc.getElementById(id)) {
+	 	return;
+	 }
+
+	 js = doc.createElement(scr);
+	 js.id = id;
+	 //js.src = "//connect.facebook.net/en_US/sdk.js"; //Carga en inglés
+	 js.src = "//connect.facebook.net/es_LA/sdk.js";
+
+	 ref.parentNode.insertBefore(js, ref);
+	}(document, 'script', 'facebook-jssdk'));
+
+}]);
 
 
-/*app.config(['$translateProvider', function ($translateProvider) {
-  $translateProvider.translations('en', {
-    'TITLE': 'Hello',
-    'FOO': 'This is a paragraph',
-    'TEST': 'This is in English'
-  });
- 
-  $translateProvider.translations('de', {
-    'TITLE': 'Hallo',
-    'FOO': 'Dies ist ein Absatz',
-    'TEST': 'Du..Du hast, du hast mitch'
-  });
+// Probando factory
+modPrincipal.factory('SrvFacebook',function($timeout, $rootScope){
+    var datosFacebook = {};
 
-  $translateProvider.translations('es', {
-    'TITLE': 'Hola',
-    'FOO': 'Esto es alguna joda',
-    'TEST': 'Esto está en Español',
-    'barra': {
-    	'valor' : 'esta en valor de la barra'
-    },
-    'PRUEBA' : 'Texto generado a la antigua'
-  });  
- 
-  $translateProvider.preferredLanguage(IDIOMA);
-  // Enable escaping of HTML
-  $translateProvider.useSanitizeValueStrategy('escape');  
-}]);*/
+        // var svc = {};
+        var fbReady = false;
+
+        function checkFB(){
+        	try{       		
+	            if (typeof FB===undefined){
+	                fbReady = false;
+	                console.log("ngFB: FB is undefined");
+	                $timeout(checkFB, 250);
+
+	            } else {
+	                
+	                console.log("ngFB: FB is defined");	                
+	                console.log("Esto es FB" + FB);
+	                fbReady = true;
+             
+	                $rootScope.$broadcast('ngFBReady',{});
+	            }        		
+
+        	} catch(e){
+        		console.log('Se totió' + e);
+        		$timeout(checkFB, 250);
+        	}
+
+        }
+
+        datosFacebook.fbReady = function(){
+            checkFB();
+            return fbReady;
+        }
+
+        // return svc;
 
 
-app.controller('controladorPrincipal', ['$scope','$http','$filter','$translate',
-								 function($scope,$http,$filter,$translate){
+	datosFacebook.nombre = function() {
+		var aux = "nada";
+		if(checkFB()){
+	        console.log('Welcome!  Fetching your information.... ');
+	        FB.api('/me', { locale: 'en_US', fields: 'name, email,picture,gender' }, function(response) {
+	          console.log('Successful login for: ' + response.name);
+	          console.log('Todo el objeto: ' + JSON.stringify(response));
+
+	          aux = response.name;
+	        });			
+		} else {
+			checkFB();
+		}
+
+        return aux;
+	}
+
+
+    return datosFacebook;
+});
+
+
+modPrincipal.controller('controladorPrincipal', ['$scope','$state','$http','$filter','$translate','SrvFacebook',
+								 function($scope,$state,$http,$filter,$translate,SrvFacebook){
+
+	//$scope.Servicio1 = SrvFacebook.prueba;
+	// $scope.Nombre1 = SrvFacebook.nombre();
+
+   /*     $scope.$on('ngFBReady', function(e, d){
+            console.log("FB defined, running init.");
+            FB.init({
+		      appId: 'your-app-id',
+		      xfbml: true,
+		      version: 'v2.1'
+	      });
+        })*/
+
+     // Trigger the polling loop in the service
+      // SrvFacebook.fbReady();
+      //$scope.Nombre1 = SrvFacebook.nombre();
+
+
+	$scope.x = 0;
+
+	if($scope.x<1){
+		$state.go('perfil');
+		console.log('Despues del state');	
+	} else {
+		$state.go('registro');
+		console.log('Despues del state en else');			
+	}
+
+/*	$scope.getMyLastName = function() {
+	   facebookService.getMyLastName() 
+	     .then(function(response) {
+	       $scope.last_name = response.last_name;
+	     }
+	   );
+	};								 	*/
 
 	$scope.cambiaridioma = function(idioma){
 		console.log('Entró a cambiar carajo!' + idioma);
