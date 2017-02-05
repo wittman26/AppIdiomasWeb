@@ -29,90 +29,45 @@
 <script src="app/appPrin.js"></script>
 
 <!-- CONTROLADORES DE APLICACION -->
+<script src="app/components/Barrasuperior/barrasuperiorCtrl.js" type="text/javascript"></script>
+<script src="app/components/Inicio/inicioCtrl.js" type="text/javascript"></script>
 <script src="app/components/Login/loginCtrl.js" type="text/javascript"></script>
 <script src="app/components/Registro/registroCtrl.js" type="text/javascript"></script>
 <script src="app/components/Perfil/perfilCtrl.js" type="text/javascript"></script>
 
 <!-- SERVICIOS DE APLICACION -->
-<script src="app/shared/Servicios/FacebookSrv.js" type="text/javascript"></script>
 <script src="app/shared/Servicios/UsuariosSrv.js" type="text/javascript"></script>
+<script src="app/shared/Servicios/FacebookSrv.js" type="text/javascript"></script>
 
 <body ng-app="modPrincipal">
-	<div ng-controller="controladorPrincipal" ng-cloak>
-	<header>
-		<nav>
-			<h1>{{ 'BIENVENIDO' | translate }} - {{Servicio1}} - {{Nombre1}}</h1>
-			<a ui-sref="login" ng-show="visible">{{ 'barra.iniciosesion' | translate }}</a>
-			<a ui-sref="registro">{{ 'barra.registrar' | translate }}</a>
-			<a ui-sref="perfil">{{ 'barra.perfil' | translate }}</a>			
 
-			<p>
-			  <button ng-click="cambiaridioma('es')">Español</button>
-			  <button ng-click="cambiaridioma('en')">English</button>
-			</p>					
-		</nav>
-	</header>
+	<!-- Barra Superior -->
+	<header id="superior" 	ui-view="superior"></header>
 
-	<section>	    
-	    <div id="lateral" ui-view="lateral"></div>
-		<div id="principal" ui-view="principal"></div>	    
+	<!-- Contenido principal -->
+	<section class="container-fluid">	    
+	    <div id="lateral" 	ui-view="lateral" 	ng-class="{'col-md-3': !logvisibleScope}" ng-cloak></div>
+		<div id="principal" ui-view="principal" ng-class="{'col-md-9': !logvisibleScope, 'col-md-12': logvisibleScope}" ng-cloak></div>
 	</section>
 
+	<!-- Footer -->
+	<!-- http://bootsnipp.com/snippets/33WGq -->
 	<footer>
-		<p>Copyright 2017. Wittman Gutiérrez, Bogotá D.C.<br>
-		Cel:3134395795</p>	      	
-	</footer>
+	    <div class="footer-bottom">
+	        <div class="container">
+	            <p class="pull-left"> Copyright © Footer 2017. All right reserved. </p>
+	            <div class="pull-right">
+	                <ul class="nav nav-pills payments">
+	                    <li><i class="fa fa-cc-visa"></i></li>
+	                    <li><i class="fa fa-cc-mastercard"></i></li>
+	                    <li><i class="fa fa-cc-amex"></i></li>
+	                    <li><i class="fa fa-cc-paypal"></i></li>
+	                </ul> 
+	            </div>
+	        </div>
+	    </div>
+	    <!--/.footer-bottom--> 
+	</footer>	
 
-
-
-
-	<!-- PRUEBAS DE ANGULAR -->
-	<!-- <div ng-controller="controladorPrincipal"> -->
-		<div ng-hide="true" ng-cloak>
-			<form ng-submit="cambiar()">
-			  <input type="text">
-			  <input type="submit">
-			  <button class="btn btn-success">Éxito</button>
-			</form>	
-			{{ numero | currency:'$'}}
-			<p>{{resu}}</p><br>
-
-			<h4>Datos Quemados</h4>
-			<table border="1">
-				<tr>
-					<th ng-repeat="(k,c) in columnas">{{c}}</th>
-				</tr>
-
-				<tr ng-repeat="v in datos.contactos">
-					<td ng-repeat="c in columnas">
-						<div>{{v[c]}}</div>
-					</td>
-				</tr>
-			</table>
-
-			<h4>Datos de la Base</h4>
-			<table border="1">
-				<tr>
-					<th ng-repeat="(k,c) in columnasContactos">{{c}}</th>
-				</tr>
-
-				<tr ng-repeat="v in ContactosBD.contactos">
-					<td ng-repeat="c in columnasContactos">
-						<div>{{v[c]}}</div>
-					</td>
-				</tr>
-			</table>
-
-			<p class="label label-danger ng-binding">
-				<i class="fa fa-times" aria-hidden="true"></i>
-				Ejemplo de uso de awesome icons: fa-times
-			</p><br>
-
-			<i class="fa fa-camera-retro fa-lg"></i> fa-lg					
-		</div>
-
-
-
-	
 </body>
 </html>

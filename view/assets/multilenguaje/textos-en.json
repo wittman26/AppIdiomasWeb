@@ -1,8 +1,12 @@
 {
     "barra" : {
+        "inicio"        :   "Start",
         "iniciosesion"  :   "Login",
         "registrar"     :   "Sign up",
-        "perfil"        :   "Profile"
+        "perfil"        :   "Profile",
+        "bienvenido"    :   "Welcome back",
+        "salir"         :   "Exit",
+        "idioma"        :   "Language"
     },
     "comun" : {
     	"aceptar"	: "Accept",

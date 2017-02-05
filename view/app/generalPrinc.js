@@ -26,18 +26,42 @@ var IDIOMA = 'en';
 /* Variable de control*/
 var PROBANDO = "Muéstrese!";
 
-/* Visibilidad login*/
+/* Visibilidad de opcion login*/
 var LOGVISIBLE = true;
+
+/* Página destino después de login*/
+var PAGDESTINO = 'inicio';
 
 /* Dirección de páginas*/
 var ESTADOS_URLS = {
 
+					'inicio': {
+					            url: "/inicio",
+					            views:{
+					                "principal": {
+					                    templateUrl: COMP + "/inicio/inicio.html",
+					                    controller: 'inicioCtrl'
+					                },
+					                "lateral": {
+					                    templateUrl: "lateral.html"
+					                },
+					                "superior": {
+					                    templateUrl: COMP + "/barraSuperior/barraSuperior.html",
+					                    controller: 'barraSuperiorCtrl'
+					                }
+					            },
+					            permitido: "N"
+					        },					
 					'login': {
 					            url: "/login",
 					            views:{
 					                "principal": {
 					                    templateUrl: COMP + "/login/login.html",
 					                    controller: 'loginCtrl'
+					                },
+					                "superior": {
+					                    templateUrl: COMP + "/barraSuperior/barraSuperior.html",
+					                    controller: 'barraSuperiorCtrl'
 					                }
 					            }					            
 					        },
@@ -48,8 +72,9 @@ var ESTADOS_URLS = {
 					                    templateUrl: COMP + "/registro/registro.html",
 					                    controller: 'registroCtrl'
 					                },
-					                "lateral": {
-					                    templateUrl: "lateral.html"
+					                "superior": {
+					                    templateUrl: COMP + "/barraSuperior/barraSuperior.html",
+					                    controller: 'barraSuperiorCtrl'
 					                }
 					            } 
 					        },
@@ -62,8 +87,13 @@ var ESTADOS_URLS = {
 					                },
 					                "lateral": {
 					                    templateUrl: "lateral.html"
+					                },
+					                "superior": {
+					                    templateUrl: COMP + "/barraSuperior/barraSuperior.html",
+					                    controller: 'barraSuperiorCtrl'
 					                }
-					            }					            
+					            },
+					            permitido: "N"
 					        },					        
 			}
 

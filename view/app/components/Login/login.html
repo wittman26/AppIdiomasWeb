@@ -16,14 +16,13 @@
                     </label>
                 </div>
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">{{ 'login.entrar' | translate }}</button>
-                <fb:login-button show-faces="true" max-rows="1" size="large"></fb:login-button>    
-                <a href="/join/facebook/?next=/home/" class="btn btn-flacebook btn-connect btn-large">
-                    <span class="ico-wrap">
-                        <span class="ico ico-facebook ico-white ico-m"></span>
-                    </span>
-                    Iniciar sesión con Facebook
-                </a>            
+                
+                <!-- <fb:login-button show-faces="true" max-rows="1" size="large"></fb:login-button> -->
+                          
             </form><!-- /form -->
+                <button class="btn btn-md btn-primary btn-block" ng-click="entrarFace()">
+                    Iniciar sesión con Facebook
+                </button>            
             <a href="#" class="forgot-password">
                 {{ 'login.olvido' | translate }} {{prueba}}
             </a><br>
