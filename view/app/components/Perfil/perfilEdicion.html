@@ -1,0 +1,30 @@
+<!-- Página de Edición de Perfil -->
+
+
+<div class="container-fluid">
+	<!-- <div class="col-md-3">
+		<ul class="nav navbar-default">
+			<li class="active"><a href="#">Home</a></li>
+			<li><a>Page 1</a></li>
+			<li><a>Page 2</a></li>
+			<li><a>Page 3</a></li>
+		</ul>	
+	</div> -->
+
+<nav class="col-md-2 navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand">Settings</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><a ui-sref="perfiledicion.data">{{'perfil.datospers' | translate}}</a></li> <!-- class="active" -->
+      <li><a ui-sref="perfiledicion.pass">{{'perfil.contrasena' | translate}}</a></li>
+      <li><button class="btn btn-danger">{{'perfil.eliminarperf' | translate}}</button></li>
+    </ul>
+  </div>
+</nav>
+
+	<div ui-view="edicion" class="col-md-9">
+	
+	</div>
+</div>

@@ -1,0 +1,20 @@
+<!-- Página de Edición de Perfil Data -->
+	<form class="form-signin" ng-submit="registrar()">
+		<h3>PROBANDO</h3>
+
+		<div campo="texto" control="controles" nombre="'nombre'" 
+		etiqueta="'registro.nombre'" ayuda="'registro.nombre'"
+		modelo="modelo.usu_nombre"
+		class="col-xs-12 col-md-12 col-lg-12"></div>
+
+		<div campo="texto" control="controles" nombre="'email'" 
+		etiqueta="'registro.email'" ayuda="'registro.email'"
+		modelo="modelo.usu_correo"
+		class="col-xs-12 col-md-12 col-lg-12"></div>
+
+		<ul class="login-error" ng-if="true">
+			<li>{{'registro.contDif' | translate}}</li>
+		</ul>
+
+		<button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">{{ 'barra.registrar' | translate }}</button>           
+	</form><!-- /form -->	

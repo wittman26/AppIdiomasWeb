@@ -3,7 +3,7 @@
 	fecha: 2016-12-13
 */
 
-var modPrincipal = angular.module('modPrincipal', ['ui.router','pascalprecht.translate','ngCookies','modControladores','modServicios']);
+var modPrincipal = angular.module('modPrincipal', ['ui.router','pascalprecht.translate','ngCookies','LocalStorageModule','modControladores','modServicios','modDirectivas']);
 
 // Configuración de URLS para SPA
 modPrincipal.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider){
@@ -35,7 +35,8 @@ modPrincipal.config(['$translateProvider', function ($translateProvider) {
 modPrincipal.run(['$rootScope','$state','$window','UsuariosSrv',
   function($rootScope,$state,$window,UsuariosSrv) {
 
-  	$rootScope.logvisibleScope = LOGVISIBLE;
+  	$rootScope.logVisible = LOGVISIBLE;
+  	$rootScope.menLateralVisible = MENLATVISIBLE;
 	
 	//Configuración de cambio de rutas
 	$rootScope.$on('$stateChangeStart', function(event, toState,fromState)
@@ -43,7 +44,8 @@ modPrincipal.run(['$rootScope','$state','$window','UsuariosSrv',
 	    // Se llama a checkEstado, definido en la factoria UsuariosSrv
 	    // inyectada en la acción run de la aplicación	
 		UsuariosSrv.checkEstado(event,toState);
-		$rootScope.logvisibleScope = LOGVISIBLE;
+		$rootScope.logVisible = LOGVISIBLE;
+		$rootScope.menLateralVisible = MENLATVISIBLE;
 	});
 
 	// Configuración API de facebook

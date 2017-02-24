@@ -3,13 +3,15 @@
     class usuarios
     {
         // Datos de la tabla "usu_usuarios"
-        const NOMBRE_TABLA = "usu_usuarios";
+        const NOMBRE_TABLA = "USU_USUARIOS";
         // Nombre de campos
 
         const USU_CODIGO = "usu_codigo";
         const USU_NOMBRE = "usu_nombre";
         const USU_CORREO = "usu_correo";
+        const USU_IMAGEN = "usu_imagen";
         const USU_CLAVE  = "usu_clave";
+        const USU_IDFACEBOOK  = "usu_idfacebook";
 
         const ESTADO_CREACION_EXITOSA = 1;
         const ESTADO_CREACION_FALLIDA = 2;        
@@ -19,6 +21,17 @@
         const ESTADO_URL_INCORRECTA = 6;
         const ESTADO_PARAMETROS_INCORRECTOS = 7;
         const ESTADO_FALLA_DESCONOCIDA = 8;
+        const ESTADO_USUARIO_EXISTENTE = 9;
+
+        public function __construct()
+        {
+            $this->usu_codigo='';
+            $this->usu_nombre='';
+            $this->usu_correo='';
+            $this->usu_imagen='';
+            $this->usu_clave='';
+            $this->usu_idfacebook='' ;           
+        }        
 
         // PROCESAR POST
         public static function post($peticion)
@@ -33,7 +46,10 @@
                     //http://localhost:8888/AppIdiomas/services/usuarios/login
                     case 'login':
                         return self::loguear();
-                        break;                                    
+                        break;
+                    case 'loginface':
+                        return self::loguearFace();
+                        break;
                     default:
                         throw new ExcepcionApi(self::ESTADO_URL_INCORRECTA, "Url mal formada", 400);
                         break;
@@ -43,6 +59,30 @@
             }            
         }
 
+        // PROCESAR GET (Consultas)
+        public static function get($peticion)
+        {
+            if (isset($peticion[0])) {   
+                switch ($peticion[0]) {
+                    case 'obtenerusuario':
+                        // Primero debe autorizar antes de cualquier acción
+                        $datosUsuario = self::autorizar();
+                        //Obtiene los datos de usuario
+                        return self::obtenerUsuarioPorNombre($datosUsuario->{self::USU_NOMBRE});
+                        break;
+                    default:
+                        throw new ExcepcionApi(self::ESTADO_URL_INCORRECTA, "Url mal formada", 400);
+                        break;                    
+                }
+            } else {
+                throw new ExcepcionApi(self::ESTADO_URL_INCORRECTA, "Url mal formada", 400);
+            }            
+
+        }         
+
+        /* 1. REGISTRO DE USUARIO
+        Se encarga de crear un nuevo usuario
+        */
         private static function registrar()
         {
             $cuerpo         = file_get_contents('php://input');
@@ -67,53 +107,93 @@
             }            
         }        
 
-        /* 1. CREACIÓN DE USUARIO
+        /* 1.1 CREACIÓN DE USUARIO
         Recibe los datos en forma JSON y devuelve un entero
         con código de resultado
         */
         private static function crear($datosUsuario)
         {
-            $usu_nombre     = $datosUsuario->usu_nombre;
-            $usu_correo     = $datosUsuario->usu_correo;
-            $usu_clave      = $datosUsuario->usu_clave;
+            if(self::buscarUsuario(self::USU_NOMBRE,$datosUsuario->usu_nombre)){
+                throw new ExcepcionApi(self::ESTADO_USUARIO_EXISTENTE, "El usuario ".$datosUsuario->usu_nombre." ya existe", 400);
+            } else {            
 
-            $claveEncriptada = self::encriptarClave($usu_clave);
+                $usu_nombre         = $datosUsuario->usu_nombre;
+                $usu_correo         = $datosUsuario->usu_correo;
+                $usu_imagen         = $datosUsuario->usu_imagen;
+                $usu_clave          = $datosUsuario->usu_clave;
+                $usu_idfacebook     = $datosUsuario->usu_idfacebook;
 
-            /* ATENCIÓN, cambiar por TOKEN*/
-            $claveApi = self::generarClaveApi();
+                $claveEncriptada = self::encriptarClave($usu_clave);
 
-            try {
+                /* ATENCIÓN, cambiar por TOKEN*/
+                $claveApi = self::generarClaveApi();
 
-                $pdo = ConexionBD::getInstancia()->getBD();
+                try {
 
-                // Sentencia INSERT
-                $comando = "INSERT INTO " . self::NOMBRE_TABLA . " ( " .
-                    self::USU_NOMBRE . "," .
-                    self::USU_CORREO . "," .
-                    self::USU_CLAVE . ")" .
-                    " VALUES(?,?,?)";                    
+                    $pdo = ConexionBD::getInstancia()->getBD();
+
+                    // Sentencia INSERT
+                    $comando = "INSERT INTO " . self::NOMBRE_TABLA . " ( " .
+                        self::USU_NOMBRE . "," .
+                        self::USU_CORREO . "," .
+                        self::USU_IMAGEN . "," .
+                        self::USU_IDFACEBOOK . "," .
+                        self::USU_CLAVE . ")" .
+                        " VALUES(?,?,?,?,?)";                    
 
 
-                $sentencia = $pdo->prepare($comando);
+                    $sentencia = $pdo->prepare($comando);
 
-                $sentencia->bindParam(1, $usu_nombre);
-                $sentencia->bindParam(2, $usu_correo);
-                $sentencia->bindParam(3, $claveEncriptada);
+                    $sentencia->bindParam(1, $usu_nombre);
+                    $sentencia->bindParam(2, $usu_correo);
+                    $sentencia->bindParam(3, $usu_imagen);
+                    $sentencia->bindParam(4, $usu_idfacebook);
+                    $sentencia->bindParam(5, $claveEncriptada);
 
-                $resultado = $sentencia->execute();
+                    $resultado = $sentencia->execute();
 
-                if ($resultado) {
-                    return self::ESTADO_CREACION_EXITOSA;
-                } else {
-                    return self::ESTADO_CREACION_FALLIDA;
+                    if ($resultado) {
+                        return self::ESTADO_CREACION_EXITOSA;
+                    } else {
+                        return self::ESTADO_CREACION_FALLIDA;
+                    }
+                } catch (PDOException $e) {                
+                    throw new ExcepcionApi(self::ESTADO_ERROR_BD, $e->getMessage(),404);
                 }
-            } catch (PDOException $e) {                
-                throw new ExcepcionApi(self::ESTADO_ERROR_BD, $e->getMessage(),404);
             }
 
         }        
 
-        // 1.1 Encriptación de contraseña
+        /* 1.1.1 BUSCA USUARIO EXISTENTE
+        */
+        private static function buscarUsuario($usu_campo,$usu_nombre)
+        {
+            try {
+
+                $pdo = ConexionBD::getInstancia()->getBD();
+
+                // Sentencia Select
+                $comando =  "SELECT ".self::USU_NOMBRE.
+                            " FROM " .self::NOMBRE_TABLA .
+                            " WHERE UPPER(" .$usu_campo . ")=UPPER(?)";
+                
+                $sentencia = $pdo->prepare($comando);
+
+                $sentencia->bindParam(1, $usu_nombre);
+
+                $sentencia->execute();
+
+                if (!empty($sentencia->fetchAll(PDO::FETCH_ASSOC))) {                 
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (PDOException $e) {
+                throw new ExcepcionApi(self::ESTADO_ERROR_BD, $e->getMessage());
+            }            
+        }        
+
+        // 1.1.1 Encriptación de contraseña
         private static function encriptarClave($clavePlana)
         {
             if ($clavePlana)
@@ -127,7 +207,6 @@
         {
             return md5(microtime().rand());
         }
-
 
         // 2. LOGIN
         private static function loguear()
@@ -143,29 +222,20 @@
 
             // 2.1 Autentica usuario
             if (self::autenticar($usu_nombre,$usu_clave)) {
+                
                 // 2.2 Obtiene datos de usuario
-                $usu_usuario = self::obtenerUsuarioPorNombre($usu_nombre);
+                $usu_usuario = self::obtenerUsuario(self::USU_NOMBRE,$usu_nombre);
 
                 if ($usu_usuario != NULL) {
-                    VistaJson::$estado = 200;
-
-                    $respuesta["usu_nombre"]    = $usu_usuario["usu_nombre"];
-                    $respuesta["usu_correo"]    = $usu_usuario["usu_correo"];
-                    //ATENCIÓN! retornar TOKEN
-                    // Retorna respuesta
-                    return [
-                                "estado" => 1, 
-                                "usuario" => $respuesta
-                            ];
-
+                    return self::devolverSesion($usu_usuario);
                 } else {
                     throw new ExcepcionApi(self::ESTADO_FALLA_DESCONOCIDA,
                         "Ha ocurrido un error");
                 }
 
-            } else {
+            } else {                
                 throw new ExcepcionApi(self::ESTADO_PARAMETROS_INCORRECTOS,
-                                        "Nombre o contraseña inválidos");
+                                        "Nombre o contraseña inválidos",401);
             }
 
         }        
@@ -203,14 +273,14 @@
             }
         }
 
-        //Verifica contraseña teniendo en cuenta que se usó password_hash para encriptar
+        // 2.1.1 Verifica contraseña teniendo en cuenta que se usó password_hash para encriptar
         private static function validarContrasena($clavePlana, $claveHash)
         {
             return password_verify($clavePlana, $claveHash);
         }                
 
         // 2.2 Obtiene datos de usuario
-        private static function obtenerUsuarioPorNombre($usu_nombre)
+        private static function obtenerUsuario($usu_campo, $usu_nombre)
         {
             $pdo = ConexionBD::getInstancia()->getBD();
 
@@ -218,9 +288,9 @@
             $comando = "SELECT " .
                 self::USU_NOMBRE . "," .
                 self::USU_CORREO . "," .
-                self::USU_CLAVE . 
+                self::USU_IMAGEN .
                 " FROM " . self::NOMBRE_TABLA .
-                " WHERE " . self::USU_NOMBRE . "=?";
+                " WHERE UPPER(" . $usu_campo . ")=UPPER(?)";
 
             $sentencia = $pdo->prepare($comando);
 
@@ -232,18 +302,88 @@
                 return null;
         }
 
+        // 3. LOGIN CON FACEBOOK
+        private static function loguearFace()
+        {
+            $respuesta = array();
 
-        //Método para autorizar acciones
-        public static function autorizar()
+            $cuerpo         = file_get_contents('php://input');
+            $datosUsuario   = json_decode($cuerpo);
+
+            $usu_idfacebook     = $datosUsuario->id;
+
+                
+            // 3.1 Obtiene datos de usuario
+            $usu_usuario = self::obtenerUsuario(self::USU_IDFACEBOOK,$usu_idfacebook);
+
+            if ($usu_usuario != NULL) {
+                return self::devolverSesion($usu_usuario);                   
+            } else {
+                // Se guarda la imagen en el servidor
+                
+                $usu_imagen = file_get_contents($datosUsuario->picture->data->url);
+                file_put_contents(DIR_IMG_USU.preg_replace('[\s+]','', $datosUsuario->name).'.jpg', $usu_imagen);
+
+                $usu_usuario = new self();;
+
+                // Se formatean los datos de facebook a la base
+                $usu_usuario->usu_nombre         = $datosUsuario->name;
+                $usu_usuario->usu_correo         = $datosUsuario->email;
+                $usu_usuario->usu_imagen         = preg_replace('[\s+]','', $datosUsuario->name).'.jpg';
+                $usu_usuario->usu_clave          = $datosUsuario->id;                
+                $usu_usuario->usu_idfacebook     = $datosUsuario->id;
+
+                // Se crea el usuario en la base
+                $resultado = self::crear($usu_usuario);
+                
+                // Devuelve sesion al crear usuario
+                switch ($resultado) {
+                    case self::ESTADO_CREACION_EXITOSA:
+                        $usu_usuario = self::obtenerUsuario(self::USU_IDFACEBOOK,$usu_idfacebook);
+                        if ($usu_usuario != NULL) {
+                            return self::devolverSesion($usu_usuario);
+                        }
+                        break;
+                    case self::ESTADO_CREACION_FALLIDA:
+                        throw new ExcepcionApi(self::ESTADO_CREACION_FALLIDA, "Ha ocurrido un error");
+                        break;
+                    default:
+                        throw new ExcepcionApi(self::ESTADO_FALLA_DESCONOCIDA, "Falla desconocida", 400);
+                }
+
+            }
+
+
+        }           
+
+        private static function devolverSesion($usu_usuario){
+            VistaJson::$estado = 200;
+
+            $respuesta["usu_nombre"]    = $usu_usuario["usu_nombre"];
+            $respuesta["usu_imagen"]    = $usu_usuario["usu_imagen"];
+            
+            //ATENCIÓN! retornar TOKEN
+            return [
+                        "estado" => 1, 
+                        "usuario" => $respuesta,
+                        "idsesion" => Auth::SignIn($usu_usuario)
+                    ];
+        }
+
+        // 3. Método para autorizar acciones
+        private static function autorizar()
         {
             $cabeceras = apache_request_headers();
 
             if (isset($cabeceras["authorization"])) {
 
-                $claveApi = $cabeceras["authorization"];
+                $token = $cabeceras["authorization"];
 
-                if (usuarios::validarClaveApi($claveApi)) {
-                    return usuarios::obtenerIdUsuario($claveApi);
+                // if (usuarios::validarClaveApi($claveApi)) {
+                if(Auth::GetData($token)){
+                    // return usuarios::obtenerIdUsuario($claveApi);
+                    VistaJson::$estado = 200;
+                    return Auth::GetData($token);
                 } else {
                     throw new ExcepcionApi(
                         self::ESTADO_CLAVE_NO_AUTORIZADA, "Clave de API no autorizada", 401);
@@ -254,42 +394,8 @@
                     self::ESTADO_AUSENCIA_CLAVE_API,
                     "Se requiere Clave del API para autenticación");
             }
-        }        
 
-        //Valida la claveApi en la BD
-        private static function validarClaveApi($claveApi)
-        {
-            $comando = "SELECT COUNT(" . self::ID_USUARIO . ")" .
-                " FROM " . self::NOMBRE_TABLA .
-                " WHERE " . self::CLAVE_API . "=?";
-
-            $sentencia = ConexionBD::getInstancia()->getBD()->prepare($comando);
-
-            $sentencia->bindParam(1, $claveApi);
-
-            $sentencia->execute();
-
-            return $sentencia->fetchColumn(0) > 0;
-        }        
-
-        //Obtiene datos de usuario dada una claveApi
-        private static function obtenerIdUsuario($claveApi)
-        {
-            $comando = "SELECT " . self::ID_USUARIO .
-                " FROM " . self::NOMBRE_TABLA .
-                " WHERE " . self::CLAVE_API . "=?";
-
-            $sentencia = ConexionBD::getInstancia()->getBD()->prepare($comando);
-
-            $sentencia->bindParam(1, $claveApi);
-
-            if ($sentencia->execute()) {
-                $resultado = $sentencia->fetch();
-                return $resultado['idUsuario'];
-            } else
-                return null;
-        }        
-
-       
+        }               
+           
     }
 ?>

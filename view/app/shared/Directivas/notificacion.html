@@ -1,0 +1,17 @@
+<!-- Notificaciones -->
+<dd  role='alert' class='alert' ng-repeat="(llave, control) in control"
+	ng-class="{'alert-success':control.tipo==='ok', 'alert-warning':control.tipo==='aten', 'alert-danger':control.tipo==='error', 'alert-info':control.tipo==='info'}" >
+
+    <!-- Botón de cerrar -->
+    <button ng-show="control.cerrable" type='button' class='close' ng-click='close()' aria-label='Close' data-dismiss='alert'>
+    <span aria-hidden='true'>&times;</span>
+    </button>
+    
+    <!-- Aviso de alerta con ícono -->
+	<i class="fa"  aria-hidden="true"
+		ng-class="{'fa-check':control.tipo==='ok', 'fa-exclamation-triangle':control.tipo==='aten', 'fa-times-circle':control.tipo==='error', 'fa-info-circle':control.tipo==='info'}"></i>
+		<strong>{{ "notificaciones." + control.tipo | translate }}:</strong><br><small>
+		{{control.mensaje}}</small>
+</dd>
+
+

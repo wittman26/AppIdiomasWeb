@@ -8,8 +8,9 @@
 	<link rel="stylesheet" type="text/css" href="http://localhost:8888/Angular/LibreriasLocal/ionicons-2.0.1/css/ionicons.min.css">
 	<link rel="stylesheet" type="text/css" href="http://localhost:8888/Angular/LibreriasLocal/font-awesome-4.7.0/css/font-awesome.min.css">
 
-
+	<!-- ESTILOS PROPIOS -->
 	<link rel="stylesheet" type="text/css" href="assets/css/cssLogin.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/estilo.css">
 </head>
 
 <!-- FRAMEWORKS EN LOCAL -->
@@ -22,6 +23,7 @@
 <script src="assets/libs/angular-translate.min.js"></script> <!-- filtro de multilenguaje -->
 <script src="assets/libs/angular-translate-loader-static-files.min.js"></script>
 <script src="assets/libs/angular-cookies.min.js"></script> <!-- Manejador de cookies -->
+<script src="assets/libs/angular-local-storage.min.js"></script> <!-- Administración de LocalStorage -->
 
 <!-- SCRIPTS DE APLICACION -->
 <script src="assets/js/jsLogin.js" type="text/javascript"></script>
@@ -29,15 +31,26 @@
 <script src="app/appPrin.js"></script>
 
 <!-- CONTROLADORES DE APLICACION -->
-<script src="app/components/Barrasuperior/barrasuperiorCtrl.js" type="text/javascript"></script>
+<script src="app/shared/barrasuperior/barrasuperiorCtrl.js" type="text/javascript"></script>
+<script src="app/shared/barraLateral/barraLateralCtrl.js" type="text/javascript"></script>
 <script src="app/components/Inicio/inicioCtrl.js" type="text/javascript"></script>
 <script src="app/components/Login/loginCtrl.js" type="text/javascript"></script>
 <script src="app/components/Registro/registroCtrl.js" type="text/javascript"></script>
 <script src="app/components/Perfil/perfilCtrl.js" type="text/javascript"></script>
+<script src="app/components/Perfil/perfilEdicionCtrl.js" type="text/javascript"></script>
+<script src="app/components/Perfil/perfilEdicionDataCtrl.js" type="text/javascript"></script>
+<script src="app/components/Perfil/perfilEdicionPassCtrl.js" type="text/javascript"></script>
+<script src="app/components/Cursos/cursosCtrl.js" type="text/javascript"></script>
+<script src="app/components/referencia/referenciaCtrl.js" type="text/javascript"></script>
 
 <!-- SERVICIOS DE APLICACION -->
 <script src="app/shared/Servicios/UsuariosSrv.js" type="text/javascript"></script>
 <script src="app/shared/Servicios/FacebookSrv.js" type="text/javascript"></script>
+<script src="app/shared/Servicios/LlamadoHttpSrv.js" type="text/javascript"></script>
+<script src="app/shared/Servicios/LocalStorageSrv.js" type="text/javascript"></script>
+
+<!-- DIRECTIVAS DE APLICACION -->
+<script src="app/shared/Directivas/directivas.js" type="text/javascript"></script>
 
 <body ng-app="modPrincipal">
 
@@ -46,8 +59,8 @@
 
 	<!-- Contenido principal -->
 	<section class="container-fluid">	    
-	    <div id="lateral" 	ui-view="lateral" 	ng-class="{'col-md-3': !logvisibleScope}" ng-cloak></div>
-		<div id="principal" ui-view="principal" ng-class="{'col-md-9': !logvisibleScope, 'col-md-12': logvisibleScope}" ng-cloak></div>
+	    <div id="lateral" 	ui-view="lateral" 	ng-class="{'col-md-3': menLateralVisible}" ng-cloak></div>
+		<div id="principal" ui-view="principal" ng-class="{'col-md-9': menLateralVisible, 'col-md-12': !menLateralVisible}" ng-cloak></div>
 	</section>
 
 	<!-- Footer -->

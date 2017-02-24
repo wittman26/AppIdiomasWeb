@@ -1,13 +1,15 @@
 <?php
 	class cursos{
         // Datos de la tabla "cur_cursos"
-        const NOMBRE_TABLA = "cur_cursos";
+        const NOMBRE_TABLA = "CUR_CURSOS";
         
         // Nombre de campos
 	 	const CUR_CODIGO 		= "cur_codigo";
 	 	const CUR_NOMBRE 		= "cur_nombre";
 	 	const CUR_DESCRIPCION 	= "cur_descripcion";
+	 	const CUR_IMAGEN 		= "cur_imagen";
 	 	const CUR_CAT_COD 		= "cur_cat_cod";
+	 	const CUR_USU_COD 		= "cur_usu_cod";
 
 	    const CODIGO_EXITO = 1;
 	    const ESTADO_EXITO = 1;
@@ -57,7 +59,9 @@
 		                self::CUR_CODIGO.",".
 						self::CUR_NOMBRE.",".
 						self::CUR_DESCRIPCION.",".
-						self::CUR_CAT_COD.
+						self::CUR_IMAGEN.",".						
+						self::CUR_CAT_COD.",".
+						self::CUR_USU_COD.						
 		                " FROM " . self::NOMBRE_TABLA;
 
 		            $sentencia = $pdo->prepare($comando);
@@ -67,7 +71,9 @@
 		                self::CUR_CODIGO.",".
 						self::CUR_NOMBRE.",".
 						self::CUR_DESCRIPCION.",".
-						self::CUR_CAT_COD.
+						self::CUR_IMAGEN.",".
+						self::CUR_CAT_COD.",".
+						self::CUR_USU_COD.
 		                " FROM " . self::NOMBRE_TABLA.
 		                " WHERE ".self::CUR_CAT_COD."=?";
 
@@ -103,21 +109,25 @@
 		            $comando = "INSERT INTO " . self::NOMBRE_TABLA . " ( " .
 		                self::CUR_NOMBRE . "," .
 		                self::CUR_DESCRIPCION . "," .
-		                self::CUR_CAT_COD .")" .
-		                " VALUES(?,?,?)";
+		                self::CUR_IMAGEN.",".
+		                self::CUR_CAT_COD . "," .
+		                self::CUR_USU_COD .")" .
+		                " VALUES(?,?,?,?,?)";
 
 		            // Preparar la sentencia
 		            $sentencia = $pdo->prepare($comando);
 
 		            $sentencia->bindParam(1, $cur_nombre);
 		            $sentencia->bindParam(2, $cur_descripcion);
-		            $sentencia->bindParam(3, $cur_cat_cod);
+		            $sentencia->bindParam(3, $cur_imagen);
+		            $sentencia->bindParam(4, $cur_cat_cod);
+		            $sentencia->bindParam(5, $cur_usu_cod);
 
 		            $cur_nombre 		= $cur_curso->cur_nombre;
 		            $cur_descripcion 	= $cur_curso->cur_descripcion;
+		            $cur_imagen   		= $cur_curso->cur_imagen;
 		            $cur_cat_cod 		= $cur_curso->cur_cat_cod;
-
-		            echo $comando;
+		            $cur_usu_cod 		= $cur_curso->cur_usu_cod;
 
 		            $sentencia->execute();
 

@@ -1,11 +1,43 @@
-<!-- Formulario Login descargado -->
-<!-- you can substitue the span of reauth email for a input with the email and
-    include the remember me checkbox-->
-    <div class="container">
-        <div class="card card-container">
+<!-- Formulario Registro descargado -->
+    <div class="container">            
+        <div class="card card-container">        
+        	<div notificacion control="mensajeAlerta" ></div>
+			<h3 class="login-titulo">
+				<span class="glyphicon glyphicon glyphicon-pencil"></span> {{'registro.titulo' | translate}}
+			</h3>
+            <form class="form-signin" ng-submit="registrar()">
+                <span id="reauth-email" class="reauth-email"></span>
 
-            <a href="#" class="forgot-password">
-                {{prueba}}
-            </a>
+				<div campo="texto" control="controles" nombre="'nombre'" 
+				etiqueta="'registro.nombre'" ayuda="'registro.nombre'"
+				modelo="modelo.usu_nombre"  pass=false				
+				class="col-xs-12 col-md-12 col-lg-12"></div>
+
+				<div campo="texto" control="controles" nombre="'email'" 
+				etiqueta="'registro.email'" ayuda="'registro.email'"
+				modelo="modelo.usu_correo" pass=false
+				class="col-xs-12 col-md-12 col-lg-12"></div>
+
+				<div campo="texto" control="controles" nombre="'contrasena'" 
+				etiqueta="'registro.contrasena'" ayuda="'registro.contrasena'"
+				modelo="modelo.usu_clave"  pass=true
+				class="col-xs-12 col-md-12 col-lg-12"></div>
+
+				<div campo="texto" control="controles" nombre="'contrasena2'" 
+				etiqueta="'registro.confirma'"
+				modelo="modelo.usu_clave2"  pass=true
+				class="col-xs-12 col-md-12 col-lg-12"></div>
+
+                <ul class=login-error ng-if="modelo.usu_clave!==modelo.usu_clave2">
+                    <li>{{'registro.contDif' | translate}}</li>
+                </ul>
+
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">{{ 'barra.registrar' | translate }}</button>           
+            </form><!-- /form -->
+                <button class="btn btn-md btn-primary btn-block" ng-click="entrarFace()">
+                    {{'login.entrarface' | translate}}
+                </button>            
+            <!-- <div notificacion control="mensajeAlerta" ></div> -->
+
         </div><!-- /card-container -->
-    </div><!-- /container -->
+    </div><!-- /container

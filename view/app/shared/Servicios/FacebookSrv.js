@@ -1,21 +1,49 @@
-modServicios.factory('FacebookSrv',['$window','UsuariosSrv',function($window,UsuariosSrv){
-  var objFacebook = {};
+modServicios.factory('FacebookSrv',['$window','UsuariosSrv','LlamadoHttpSrv',function($window,UsuariosSrv,LlamadoHttpSrv){
 
   function obtenerDatos(){
 
-    FB.api('/me', { locale: 'en_US', fields: 'name, email,picture,gender' }, function(response) {
-      console.log('Successful login for: ' + response.name);
-      console.log('Todo el objeto: ' + JSON.stringify(response));      
+    // En picture, se puede ingresar: picture.type(large)
+    FB.api('/me', { locale: 'en_US', fields: 'name, email,picture.width(640),gender' }, function(response) {
+      // console.log('Successful login for: ' + response.name);
+      // console.log('Todo el objeto: ' + JSON.stringify(response));      
 
+      llamarServicio(response);
       UsuariosSrv.login(response,PAGDESTINO);
     });
 
   }
 
-  return {
-    probando : function(){
-      return "Resultado de probando!";
-    },          
+  function llamarServicio($datosUsuario){
+
+          console.log("LOGIN FACE: " + JSON.stringify($datosUsuario));
+
+          // Detalles de la cabecera HTTTP
+          $servicio = '/usuarios/loginface'; 
+          
+          cabPeticion = {
+                  'method':   'POST',
+                  'url':      REST + $servicio,
+                  'data':     $datosUsuario
+          };
+
+          // Función de éxito: Si el llamado fué exitoso, se llenan los datos correspondientes
+          var funExito = function(data, status, headers, config, statusText) {
+                  console.log("Datos encontrados" + JSON.stringify(data));
+                  UsuariosSrv.login(data,PAGDESTINO);
+              };
+
+          // Función de error: Muestra los detalles del error
+          var funError = function(data, status, headers, config, statusText){
+              // notifSrv.popup(status);
+              console.log('Error status='+status);
+              console.log(JSON.stringify(data));
+          }
+
+          // Llamado al servicio de http para llamado del backEnd (servicios REST)
+          LlamadoHttpSrv.llamadoGral(cabPeticion,funExito,funError);
+      }  
+
+  return {         
     login : function(){
       FB.login(function(response) {
         if (response.status === 'connected') {

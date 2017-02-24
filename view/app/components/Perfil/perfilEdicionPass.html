@@ -1,0 +1,20 @@
+<!-- Página de Edición de Perfil Password -->
+	<form class="form-signin" ng-submit="registrar()">
+		<h3>CAMBIANDO PASSWORD</h3>
+
+		<div campo="texto" control="controles" nombre="'contrasena'" 
+		etiqueta="'registro.contrasena'" ayuda="'registro.contrasena'"
+		modelo="modelo.usu_clave"
+		class="col-xs-12 col-md-12 col-lg-12"></div>
+
+		<div campo="texto" control="controles" nombre="'contrasena2'" 
+		etiqueta="'registro.confirma'"
+		modelo="modelo.usu_clave2"
+		class="col-xs-12 col-md-12 col-lg-12"></div>
+
+		<ul class="login-error" ng-if="true">
+			<li>{{'registro.contDif' | translate}}</li>
+		</ul>
+
+		<button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">{{ 'barra.registrar' | translate }}</button>           
+	</form><!-- /form -->	

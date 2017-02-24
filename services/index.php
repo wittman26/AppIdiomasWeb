@@ -1,6 +1,8 @@
 <?php
 
 /* Inicio Codificación*/
+require 'vendor/autoload.php';
+require 'auth.php';
 
 require 'conexion/ConexionBD.php';
 require 'vistas/VistaJson.php';

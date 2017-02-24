@@ -4,20 +4,52 @@
         "iniciosesion"  :   "Login",
         "registrar"     :   "Sign up",
         "perfil"        :   "Profile",
+        "cursos"        :   "Courses",
         "bienvenido"    :   "Welcome back",
         "salir"         :   "Exit",
         "idioma"        :   "Language"
     },
+    "barraLateral" :{
+        "titulo"        :   "Categories"
+    },    
     "comun" : {
     	"aceptar"	: "Accept",
     	"cancelar"	: "Cancel"
     },
     "login" : {
+        "titulo"        :"Login",
     	"ingresemail"	:"Email address",
     	"ingresepass"	:"Password",
     	"recordar"		:"Remember",
     	"entrar"		:"Log in",
-    	"olvido"		:"Forgotten account?"
+        "entrarface"    :"Login with Facebook",
+    	"olvido"		:"Forgotten account?",
+        "error"         :"Error! wrong user or password"
     },
-    "BIENVENIDO": "Welcome to AppIdiomas"
+    "perfil" : {
+        "titulo"        : "Profile",
+        "editar"        : "Edit profile",
+        "vercursos"     : "See courses suscribed",
+        "datospers"     : "Personal data",
+        "contrasena"    : "Change your password",
+        "eliminarperf"  : "Delete profile"
+    },
+    "registro" : {
+        "titulo"     :"Sign up",
+        "nombre"     :"User name",
+        "email"      :"Email",
+        "contrasena" :"Password",
+        "confirma"   :"Confirm your password",
+        "contDif"    :"Passwords must match"
+    },
+    "cursos" : {
+        "titulo"   : "Courses"
+    },        
+    "BIENVENIDO": "Welcome to AppIdiomas",
+    "notificaciones" : {
+        "info"  :"Info",
+        "aten"  :"Atention",
+        "error" :"Error",
+        "ok"    :"Good!"
+    }   
 }

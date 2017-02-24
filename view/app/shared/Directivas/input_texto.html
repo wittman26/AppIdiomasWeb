@@ -1,0 +1,17 @@
+<div class="form-horizontal" >
+	<dt>
+		<label><span ng-if="control[nombre].requerido===true" class="gral-asterisco">* </span>{{etiqueta | translate}} </label>
+		
+		<span ng-if="ayuda" class="glyphicon glyphicon-info-sign " aria-hidden="true" role="button" 
+		data-toggle="tooltip" style="color: rgb(216, 122, 6);" title="{{ayuda | translate}}"></span>
+	</dt>
+	<dd>
+		<input type="{{control[nombre].tipo}}" class="form-control" ng-disabled="control[nombre].inhabilitado===true"
+			placeholder="{{etiqueta | translate}}" name="{{nombre}}"
+			ng-model="modelo" ng-required="control[nombre].requerido===true" ctmvalidator>
+		<span class="help-block" ng-repeat="(key, value) in control[nombre].fuentes"><strong>{{key}}:&nbsp;</strong>{{value}}</span>
+		<ul class="error-msgs">
+			<li ng-repeat="(key, value) in control[nombre].errorsShow">{{value}}</li>
+		</ul>
+	</dd>
+</div>

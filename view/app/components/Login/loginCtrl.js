@@ -2,46 +2,72 @@
 	autor: Wittman Gutiérrez
 	fecha: 2017-01-13
 */
-modControladores.controller('loginCtrl', ['$scope','$state','UsuariosSrv','FacebookSrv',
-	function($scope,$state,UsuariosSrv,FacebookSrv){	
+modControladores.controller('loginCtrl', ['$scope','$state','UsuariosSrv','FacebookSrv', 'LlamadoHttpSrv',
+	function($scope,$state,UsuariosSrv,FacebookSrv,LlamadoHttpSrv){	
 
 	$scope.datosUsuario = {};
-	$scope.prueba = 'Controlador de Login!';
-	console.log('Valor retornado: ' + JSON.stringify(UsuariosSrv));
-	$scope.serviciousu = FacebookSrv.probando();
+    $scope.error = false;       //Oculta mensaje de error al iniciar
 
-	$scope.entrarV1 = function() {
+	$scope.imagenUsu = SERV + '/Angular/AppIdiomas/view/assets/img/avatar.png';
 
-		// here, we fake authenticating and give a fake user
-		/*principal.authenticate({
-		  name: 'Usuario de prueba',
-		  roles: ['User']
-		});*/
-
-		if ($scope.returnToState) {
-			console.log('nombre de estado: ' + $scope.returnToState.name);
-			$state.go($scope.returnToState.name, $scope.returnToStateParams);
-		} else {
-			$state.go('perfil');
-		}
-	};
-
+    // 1. Entrar como usuario normal
     $scope.entrar = function()
     {	
     	console.log('State: ' + JSON.stringify($state.get()));
     	console.log('Current: ' + JSON.stringify($state.current));
-    	$scope.datosUsuario.nombre = $scope.username;
-    	$scope.datosUsuario.pais = 'Colombia';
     	
-        UsuariosSrv.login($scope.datosUsuario,PAGDESTINO);
+        $scope.datosUsuario.usu_nombre = $scope.usu_nombre;
+        $scope.datosUsuario.usu_clave = $scope.usu_clave;
+    	// $scope.datosUsuario.pais = 'Colombia';
 
+        $scope.llamarServicio($scope.datosUsuario);    	
+        // UsuariosSrv.login($scope.datosUsuario,PAGDESTINO);
     };
 
+    // 2. Entrar como usuario de facebook
     $scope.entrarFace = function(){
     	console.log("Entra con facebook");
     	FacebookSrv.login();
-    	console.log('Objeto' + FacebookSrv.objFacebook);
     }
+
+
+    $scope.llamarServicio = function($datosUsuario){
+
+        console.log("Datos recibidos" + JSON.stringify($datosUsuario));
+
+        // Detalles de la cabecera HTTTP
+        $scope.servicio = '/usuarios/login'; 
+        
+        cabPeticion = {
+                'method':   'POST',
+                'url':      REST + $scope.servicio,
+                'data':     $datosUsuario
+        };
+
+        $scope.ruta = SERV + '/Angular/AppIdiomas/view/assets/img/cursos/';
+
+        // Función de éxito: Si el llamado fué exitoso, se llenan los datos correspondientes
+        var funExito = function(data, status, headers, config, statusText) {
+                console.log("Datos encontrados" + JSON.stringify(data));
+                UsuariosSrv.login(data,PAGDESTINO);
+            };
+
+        // Función de error: Muestra los detalles del error
+        var funError = function(data, status, headers, config, statusText){
+            // notifSrv.popup(status);
+            $scope.error = true;
+            setTimeout(function () {
+                $scope.error = false;
+                scope.$apply();
+            }, 2000); 
+
+            console.log('Error status='+status);
+            console.log(JSON.stringify(data));
+        }
+
+        // Llamado al servicio de http para llamado del backEnd (servicios REST)
+        LlamadoHttpSrv.llamadoGral(cabPeticion,funExito,funError);
+    }    
 
 
 }]);

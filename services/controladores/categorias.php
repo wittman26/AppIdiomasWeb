@@ -1,7 +1,7 @@
 <?php
 	class categorias{
         // Datos de la tabla "cur_cursos"
-        const NOMBRE_TABLA = "cat_categorias";
+        const NOMBRE_TABLA = "CAT_CATEGORIAS";
         
         // Nombre de campos
 	 	const CAT_CODIGO 		= "cat_codigo";
@@ -35,7 +35,7 @@
 		    $body = file_get_contents('php://input');
 		    $cat_categoria = json_decode($body);
 
-		    echo var_dump($body);
+		    // echo var_dump($body);
 
 		    $cat_codigo = self::crear($cat_categoria);
 

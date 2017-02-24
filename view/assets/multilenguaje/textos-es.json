@@ -4,20 +4,52 @@
         "iniciosesion"  :   "Iniciar Sesión",
         "registrar"     :   "Registrarse",
         "perfil"        :   "Perfil",
+        "cursos"        :   "Cursos",
         "bienvenido"    :   "Bienvenido de vuelta",
         "salir"         :   "Salir",
         "idioma"        :   "Idioma"
-    },    
+    },
+    "barraLateral" :{
+        "titulo"        :   "Categorias"
+    },
     "comun" : {
     	"aceptar"	: "Aceptar",
     	"cancelar"	: "Cancelar"
     },
     "login" : {
+        "titulo"        :"Iniciar sesión",
     	"ingresemail"	:"Ingrese Email",
     	"ingresepass"	:"Contraseña",
     	"recordar"		:"Recordar",
     	"entrar"		:"Entrar",
-    	"olvido"		:"Olvidó la contraseña?"
+        "entrarface"    :"Iniciar sesión con Facebook",
+    	"olvido"		:"Olvidó la contraseña?",
+        "error"         :"Error! usuario o contraseña incorrectos"
     },
-    "BIENVENIDO": "Bienvenido a la App de Idiomas"
+    "perfil" : {
+        "titulo"        : "Perfil",
+        "editar"        : "Editar perfil",
+        "vercursos"     : "Ver cursos inscritos",
+        "datospers"     : "Datos básicos",
+        "contrasena"    : "Cambiar contraseña",
+        "eliminarperf"  : "Eliminar perfil"
+    },   
+    "registro" : {
+        "titulo"     :"Registro",
+        "nombre"     :"Nombre de usuario",
+        "email"      :"Email",
+        "contrasena" :"Contraseña",
+        "confirma"   :"Confirma la contraseña",
+        "contDif"    :"Las contraseñas deben coincidir"
+    },    
+    "cursos" : {
+        "titulo"   : "Cursos"
+    },    
+    "BIENVENIDO": "Bienvenido a la App de Idiomas",
+    "notificaciones" : {
+        "info"  :"Info",
+        "aten"  :"Atención",
+        "error" :"Error",
+        "ok"    :"¡Muy Bien!"
+    }
 }
