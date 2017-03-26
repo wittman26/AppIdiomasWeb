@@ -1,49 +1,49 @@
 <nav class="navbar navbar-default">
-	<div class="container-fluid">
-	    <div class="navbar-header">
-	      	<a class="navbar-brand" href="#">
-	      	{{ 'BIENVENIDO' | translate }}
-	      	</a>
-	    </div>	
+  <div class="container-fluid">
+      <div class="navbar-header">
+          <a class="navbar-brand" href="#">
+          {{ 'BIENVENIDO' | translate }}
+          </a>
+      </div>  
 
-		<ul class="nav navbar-nav">
-			<li><a ui-sref="inicio" 	ng-hide="logVisible">{{ 'barra.inicio' | translate }}</a></li>
-			<li><a ui-sref="login" 		ng-show="logVisible">
-				<span class="glyphicon glyphicon-log-in"></span> {{ 'barra.iniciosesion' | translate }}</a></li>
-			<li><a ui-sref="registro" 	ng-show="logVisible">
-				<span class="glyphicon glyphicon-user"></span> {{ 'barra.registrar' | translate }}</a></li>		
-			<li><a ui-sref="cursos">{{ 'barra.cursos' | translate }}</a></li>			
-			<!-- Enlace temporal para ver referencias de código -->
-			<li><a ui-sref="referencia" style="color: green; font-weight: bold;">REFERENCIA</a></li>
-		</ul>
-		<ul class="nav navbar-nav navbar-right">
-			<li class="dropdown" ng-hide="logVisible">
-				<a class="dropdown-toggle" data-toggle="dropdown">
-					<img ng-src="{{ruta + usu_usuario.usu_imagen}}" class="barrasup-imgperf">					
-				</a>				
-				<ul class="dropdown-menu">
-					<li><a ui-sref="perfil">{{ 'barra.perfil' | translate }}</a></li>	
-				</ul>
-			</li>		
-			<li ng-hide="logVisible">
-				<p class="navbar-text" ng-hide="logVisible">{{ 'barra.bienvenido' | translate }} {{usu_usuario.usu_nombre}}</p>
-			</li>
-			<li ng-hide="logVisible">
-				<button class="btn btn-danger navbar-btn" ng-click="salir()">{{'barra.salir' | translate}}</button>					
-			</li>			
+    <ul class="nav navbar-nav">
+      <li><a ui-sref="inicio"   ng-hide="logVisible">{{ 'barra.inicio' | translate }}</a></li>
+      <li><a ui-sref="login"    ng-show="logVisible">
+        <span class="glyphicon glyphicon-log-in"></span> {{ 'barra.iniciosesion' | translate }}</a></li>
+      <li><a ui-sref="registro"   ng-show="logVisible">
+        <span class="glyphicon glyphicon-user"></span> {{ 'barra.registrar' | translate }}</a></li>   
+      <li><a ui-sref="cursos">{{ 'barra.cursos' | translate }}</a></li>     
+      <!-- Enlace temporal para ver referencias de código -->
+      <li><a ui-sref="referencia" style="color: green; font-weight: bold;">REFERENCIA</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown" ng-hide="logVisible">
+        <a class="dropdown-toggle" data-toggle="dropdown">
+          <img ng-src="{{ruta + usu_usuario.usu_imagen}}" class="barrasup-imgperf">         
+        </a>        
+        <ul class="dropdown-menu">
+          <li><a ui-sref="perfil">{{ 'barra.perfil' | translate }}</a></li> 
+        </ul>
+      </li>   
+      <li ng-hide="logVisible">
+        <p class="navbar-text" ng-hide="logVisible">{{ 'barra.bienvenido' | translate }} {{usu_usuario.usu_nombre}}</p>
+      </li>
+      <li ng-hide="logVisible">
+        <button class="btn btn-danger navbar-btn" ng-click="salir()">{{'barra.salir' | translate}}</button>         
+      </li>     
 
-			<li class="dropdown">
-				<a class="dropdown-toggle" data-toggle="dropdown">{{'barra.idioma' | translate}}
-					<span class="caret"></span>
-				</a>
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown">{{'barra.idioma' | translate}}
+          <span class="caret"></span>
+        </a>
 
-				<!-- Sujeto a reformas -->
-				<ul class="dropdown-menu">
-					<li><a ng-click="cambiaridioma('es')">Español</a></li>
-					<li><a ng-click="cambiaridioma('en')">English</a></li>
-				</ul>
-			</li>				
+        <!-- Sujeto a reformas -->
+        <ul class="dropdown-menu">
+          <li><a ng-click="cambiaridioma('es')">Español</a></li>
+          <li><a ng-click="cambiaridioma('en')">English</a></li>
+        </ul>
+      </li>       
 
-		</ul>
-	</div>
+    </ul>
+  </div>
 </nav>
