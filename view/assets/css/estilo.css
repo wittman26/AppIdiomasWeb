@@ -5,7 +5,11 @@
   display: block;
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
-  border-radius: 50%; }
+  border-radius: 50%;
+  padding: 4px; }
+
+.barrasup-imgperf-a {
+  padding: 0px; }
 
 .cursos-img {
   width: 180px;
@@ -22,6 +26,12 @@
 .gral-titulos {
   margin: 0; }
 
+.gral-caja-centrada {
+  margin: 0px 60px; }
+
+.gral-caja-margen {
+  margin: 10px 15px; }
+
 .login-error {
   margin: 0;
   color: red;
@@ -34,5 +44,8 @@
 
 .perfil-btn-ver-cursos {
   height: 50px; }
+
+.perfil-btn-eliminar {
+  margin: 10px; }
 
 /*# sourceMappingURL=estilo.css.map */

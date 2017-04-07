@@ -29,6 +29,7 @@
     "perfil" : {
         "titulo"        : "Profile",
         "editar"        : "Edit profile",
+        "ajustes"       : "Settings",
         "vercursos"     : "See courses suscribed",
         "datospers"     : "Personal data",
         "contrasena"    : "Change your password",

@@ -29,6 +29,7 @@
     "perfil" : {
         "titulo"        : "Perfil",
         "editar"        : "Editar perfil",
+        "ajustes"       : "Ajustes",
         "vercursos"     : "Ver cursos inscritos",
         "datospers"     : "Datos básicos",
         "contrasena"    : "Cambiar contraseña",

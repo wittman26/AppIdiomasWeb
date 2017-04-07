@@ -22,6 +22,8 @@
         const ESTADO_PARAMETROS_INCORRECTOS = 7;
         const ESTADO_FALLA_DESCONOCIDA = 8;
         const ESTADO_USUARIO_EXISTENTE = 9;
+        const ESTADO_ACTUALIZACION_EXITOSA = 10;
+        const ESTADO_ACTUALIZACION_FALLIDA = 10;
 
         public function __construct()
         {
@@ -68,7 +70,7 @@
                         // Primero debe autorizar antes de cualquier acción
                         $datosUsuario = self::autorizar();
                         //Obtiene los datos de usuario
-                        return self::obtenerUsuarioPorNombre($datosUsuario->{self::USU_NOMBRE});
+                        return self::obtenerUsuario(self::USU_NOMBRE,$datosUsuario->{self::USU_NOMBRE});
                         break;
                     default:
                         throw new ExcepcionApi(self::ESTADO_URL_INCORRECTA, "Url mal formada", 400);
@@ -78,7 +80,85 @@
                 throw new ExcepcionApi(self::ESTADO_URL_INCORRECTA, "Url mal formada", 400);
             }            
 
-        }         
+        }
+
+        // PROCESAR PUT (Actualizaciones)
+        public static function put($peticion)
+        {
+            $datosUsuario = self::autorizar();
+            $datosUsuario = self::obtenerUsuario(self::USU_NOMBRE,$datosUsuario->{self::USU_NOMBRE});            
+
+            if(isset($peticion[0])){
+                switch ($peticion[0]) {
+                    case 'actualizar':
+                        $cuerpo                = file_get_contents('php://input');                
+                        $datosUsuarioNuevos    = json_decode($cuerpo);
+
+                        $resultado = self::actualizarUsuario($datosUsuario,$datosUsuarioNuevos);
+
+                        switch ($resultado) {
+                            case self::ESTADO_ACTUALIZACION_EXITOSA:
+                                VistaJson::$estado = 201;
+                                return
+                                    [
+                                        "estado"  => self::ESTADO_ACTUALIZACION_EXITOSA,
+                                        "mensaje" => '¡El registro se ha actualizado con éxito!'
+                                    ];
+                                break;
+                            case self::ESTADO_ACTUALIZACION_FALLIDA:
+                                throw new ExcepcionApi(self::ESTADO_CREACION_FALLIDA, "Ha ocurrido un error en actualización");
+                                break;
+                            default:
+                                throw new ExcepcionApi(self::ESTADO_FALLA_DESCONOCIDA, "Falla desconocida", 400);
+                        }                    
+                        break;
+                    default:
+                        throw new ExcepcionApi(self::ESTADO_URL_INCORRECTA, "Url mal formada", 400);
+                        break;        
+                }
+            }
+        }
+        
+        /* ACTUALIZAR DATOS DE USUARIO */
+        private static function actualizarUsuario($datosUsuario,$datosUsuarioNuevos)
+        {
+            try {
+                // Creando consulta UPDATE
+                $consulta = "UPDATE ". self::NOMBRE_TABLA .
+                            " SET ".self::USU_NOMBRE . "=?, " .
+                            self::USU_CORREO . "=?, " .
+                            self::USU_IMAGEN . "=?" .
+                            " WHERE " . self::USU_NOMBRE . "=?";
+
+                // Preparar la sentencia
+                $sentencia = ConexionBD::getInstancia()->getBD()->prepare($consulta);
+
+                $sentencia->bindParam(1, $usu_nombre);
+                $sentencia->bindParam(2, $usu_correo);
+                $sentencia->bindParam(3, $usu_imagen);
+                $sentencia->bindParam(4, $usu_nombre_ant);
+
+                $usu_nombre       = $datosUsuarioNuevos->usu_nombre;
+                $usu_correo       = $datosUsuarioNuevos->usu_correo;
+                $usu_imagen       = $datosUsuarioNuevos->usu_imagen;
+                $usu_nombre_ant   = $datosUsuario['usu_nombre'];
+                
+                // echo "HOLA - ".var_dump($datosUsuario)." - ".$datosUsuario['usu_nombre']." -".$datosUsuarioNuevos->usu_correo;
+
+                // Ejecutar la sentencia
+                $sentencia->execute();
+
+                if($sentencia->rowCount()>0){
+                    return self::ESTADO_ACTUALIZACION_EXITOSA;
+                } else {
+                    return self::ESTADO_ACTUALIZACION_FALLIDA;
+                }
+
+            } catch (PDOException $e) {
+                throw new ExcepcionApi(self::ESTADO_ERROR_BD, $e->getMessage());
+            }
+                
+        }        
 
         /* 1. REGISTRO DE USUARIO
         Se encarga de crear un nuevo usuario

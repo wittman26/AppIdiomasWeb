@@ -2,28 +2,33 @@
 	<form class="form-signin" ng-submit="registrar()">
 		<h3>PROBANDO</h3>
 
-		<div id="imagen" 	class="col-md-3" ng-cloak >
+		<div id="imagen" 	class="well col-md-3 gral-caja-margen" ng-cloak >
 			<img ng-src="{{imagen2}}" class="img-rounded cursos-img">
 			<label class="btn btn-default btn-file col-md-12" ng-click="cambiar()">
 			    Cargar Foto <input type="file" name="foto" style="display: none;" ng-model="imagen2"
 			    onchange="angular.element(this).scope().cambiarImagen(this)">
 			    			<!-- <input type="file" class="filestyle" data-badge="false"> -->
 			</label>
-		</div>		
+		</div>
 
-		<div campo="texto" control="controles" nombre="'nombre'" 
-		etiqueta="'registro.nombre'" ayuda="'registro.nombre'"
-		modelo="modelo.usu_nombre"
-		class="col-xs-12 col-md-12 col-lg-12"></div>
+		<div class="well col-md-8 gral-caja-margen">
+			<div campo="texto" control="controles" nombre="'nombre'" 
+			etiqueta="'registro.nombre'" ayuda="'registro.nombre'"
+			modelo="modelo.usu_nombre"
+			class="col-xs-12 col-md-12 col-lg-12"></div>
 
-		<div campo="texto" control="controles" nombre="'email'" 
-		etiqueta="'registro.email'" ayuda="'registro.email'"
-		modelo="modelo.usu_correo"
-		class="col-xs-12 col-md-12 col-lg-12"></div>
+			<div campo="texto" control="controles" nombre="'email'" 
+			etiqueta="'registro.email'" ayuda="'registro.email'"
+			modelo="modelo.usu_correo"
+			class="col-xs-12 col-md-12 col-lg-12"></div>
 
-		<!-- <ul class="login-error" ng-if="true">
-			<li>{{'registro.contDif' | translate}}</li>
-		</ul> -->
+			<!-- <ul class="login-error" ng-if="true">
+				<li>{{'registro.contDif' | translate}}</li>
+			</ul> -->
 
-		<button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">{{ 'barra.registrar' | translate }}</button>           
+			<button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">{{ 'barra.registrar' | translate }}</button>
+			
+		</div>
+
+           
 	</form><!-- /form -->	
