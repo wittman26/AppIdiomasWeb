@@ -86,7 +86,7 @@
         public static function put($peticion)
         {
             $datosUsuario = self::autorizar();
-            $datosUsuario = self::obtenerUsuario(self::USU_NOMBRE,$datosUsuario->{self::USU_NOMBRE});            
+            $datosUsuario = self::obtenerUsuario(self::USU_NOMBRE,$datosUsuario->{self::USU_NOMBRE});          
 
             if(isset($peticion[0])){
                 switch ($peticion[0]) {
@@ -133,6 +133,19 @@
                 // Preparar la sentencia
                 $sentencia = ConexionBD::getInstancia()->getBD()->prepare($consulta);
 
+                //Si está vacía la variable, no hace nada
+                if($datosUsuarioNuevos->usu_imagen) {
+                    // Si usu_imagen corresponde al nombre del archivo, no hace nada
+                    if($datosUsuarioNuevos->usu_imagen!=$datosUsuario['usu_nombre'].'.jpg'){
+                        // Si son diferentes, usu_imagen está en Base64
+                        self::saveBase64Image(  $datosUsuario['usu_nombre'].'.jpg', 
+                                                $datosUsuarioNuevos->usu_imagen);
+
+                        $datosUsuarioNuevos->usu_imagen = $datosUsuario['usu_nombre'].'.jpg';
+                    }
+                }
+                
+
                 $sentencia->bindParam(1, $usu_nombre);
                 $sentencia->bindParam(2, $usu_correo);
                 $sentencia->bindParam(3, $usu_imagen);
@@ -142,6 +155,7 @@
                 $usu_correo       = $datosUsuarioNuevos->usu_correo;
                 $usu_imagen       = $datosUsuarioNuevos->usu_imagen;
                 $usu_nombre_ant   = $datosUsuario['usu_nombre'];
+
                 
                 // echo "HOLA - ".var_dump($datosUsuario)." - ".$datosUsuario['usu_nombre']." -".$datosUsuarioNuevos->usu_correo;
 
@@ -158,7 +172,18 @@
                 throw new ExcepcionApi(self::ESTADO_ERROR_BD, $e->getMessage());
             }
                 
-        }        
+        }  
+
+        // http://desarrollophp.es/blog/2014/11/19/guardar-una-imagen-codificada-en-base64-desde-canvas-en-un-fichero-png-usando-php/
+        private static function saveBase64Image($filename,$base64img){
+            // define('UPLOAD_DIR', MAIN_BASE_PATH.'/www/upload/');
+
+            $base64img = str_replace('data:image/jpeg;base64,', '', $base64img);
+            $data = base64_decode($base64img);
+            $file = DIR_IMG_USU . $filename;    
+            $success = file_put_contents($file, $data);
+            // print $success ? $file : 'Unable to save the file.';
+        }              
 
         /* 1. REGISTRO DE USUARIO
         Se encarga de crear un nuevo usuario
@@ -399,8 +424,8 @@
             if ($usu_usuario != NULL) {
                 return self::devolverSesion($usu_usuario);                   
             } else {
-                // Se guarda la imagen en el servidor
                 
+                // Se guarda la imagen en el servidor                
                 $usu_imagen = file_get_contents($datosUsuario->picture->data->url);
                 file_put_contents(DIR_IMG_USU.preg_replace('[\s+]','', $datosUsuario->name).'.jpg', $usu_imagen);
 

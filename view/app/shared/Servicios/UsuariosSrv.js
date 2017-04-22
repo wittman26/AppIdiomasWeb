@@ -73,7 +73,7 @@ modServicios.factory('UsuariosSrv', ['$cookies','LocalStorageSrv','$state',funct
                     }
                     
             		LOGVISIBLE = false;
-            		console.log('Definido!');
+            		//console.log('Definido!');
             	}
 
                 MENLATVISIBLE = this.checkLateralVisible(toState.name,ESTADOS_URLS);                

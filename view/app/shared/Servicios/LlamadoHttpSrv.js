@@ -3,11 +3,12 @@ modServicios.service('LlamadoHttpSrv',['$http',function($http){
 		llamadoGral : function(cab0, funcionExito, funcionError){
 			var cab = $.extend(true, {}, cab0);
 
+			
 			cab['headers'] = {
 				accept: 'application/json',
-				"content-type":"application/x-www-form-urlencoded"
-				// authorization:''
-			};
+				"content-type":"application/x-www-form-urlencoded",
+				'authorization':cab.authorization
+			};			
 
 			$http(cab).then(
 				function procesarExito(response){

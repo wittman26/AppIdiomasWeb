@@ -14,7 +14,8 @@
     },
     "comun" : {
     	"aceptar"	: "Aceptar",
-    	"cancelar"	: "Cancelar"
+    	"cancelar"	: "Cancelar",
+        "actualizar": "Actualizar"
     },
     "login" : {
         "titulo"        :"Iniciar sesión",
@@ -34,7 +35,7 @@
         "datospers"     : "Datos básicos",
         "contrasena"    : "Cambiar contraseña",
         "eliminarperf"  : "Eliminar perfil"
-    },   
+    },
     "registro" : {
         "titulo"     :"Registro",
         "nombre"     :"Nombre de usuario",

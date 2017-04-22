@@ -26,7 +26,7 @@
         </ul>
       </li>   
       <li ng-hide="logVisible">
-        <p class="navbar-text" ng-hide="logVisible">{{ 'barra.bienvenido' | translate }} {{usu_usuario.usu_nombre}}</p>
+        <p class="navbar-text" ng-hide="logVisible">{{ 'barra.bienvenido' | translate }} {{usu_usuario.usu_nombre.toUpperCase()}}</p>
       </li>
       <li ng-hide="logVisible">
         <button class="btn btn-danger navbar-btn" ng-click="salir()">{{'barra.salir' | translate}}</button>         

@@ -14,7 +14,8 @@
     },    
     "comun" : {
     	"aceptar"	: "Accept",
-    	"cancelar"	: "Cancel"
+    	"cancelar"	: "Cancel",
+        "actualizar": "Actualizar"
     },
     "login" : {
         "titulo"        :"Login",
